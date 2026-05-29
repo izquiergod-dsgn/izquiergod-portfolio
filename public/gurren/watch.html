@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurren Lagann - Episode 1</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap">
+    <link rel="stylesheet" href="watch.css">
+    <link rel="shortcut icon" href="Gurren.png" type="image/x-icon">
+</head>
+<body>
+    <header class="hero">
+        <nav class="navbar">
+            <div class="logo"> <a href="landing.html" class="logo-link" target="_blank">GURREN LAGANN</a> </div>
+            <ul class="nav-links">
+                <li><a href="watch.html" class="nav-link" target="_blank">Episodes</a></li>
+                <li><a href="landing.html" class="nav-link" >Story</a></li>
+                <li><a href="gallery.html" class="nav-link" target="_blank">Gallery</a></li>
+                <li><a href="manga.html" class="nav-link" target="_blank">Manga</a></li>
+            </ul>
+            <button class="join-btn">Join the Brigade!</button>
+        </nav>
+    </header>
+
+    <div class="reproductor">
+        <div class="episode-container">
+            <section class="episode-player">
+                <h2 class="episode-title">EPISODE 1: <span>Bust Through the Heavens With Your Drill!</span></h2>
+                
+                <div class="video-container">
+                    <video id="gurren-video" poster="images/videos/Ep1.jpg" controls>
+                        <source src="images/videos/gurren-lagann-ep1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    
+                    <div class="video-controls">
+                        <button id="play-pause" class="control-btn">▶</button>
+                        <input type="range" id="progress-bar" min="0" max="100" value="0">
+                        <span id="time-display">00:00 / 24:21</span>
+                        <button id="fullscreen" class="control-btn">⛶</button>
+                        <button id="volume-btn" class="control-btn">🔊</button>
+                        <input type="range" id="volume-control" min="0" max="1" step="0.1" value="1">
+                    </div>
+                </div>
+                
+                <div class="episode-info">
+                    <p class="episode-synopsis">
+                        Simon, a shy digger, discovers a mysterious glowing drill and a small mecha called Lagann. 
+                        When the ceiling of his underground village collapses, he and the brash Kamina fight back 
+                        against the beastmen in an epic first battle!
+                    </p>
+                    
+                    <div class="episode-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Original Air Date:</span>
+                            <span class="detail-value">April 1, 2007</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Duration:</span>
+                            <span class="detail-value">24 min 21 sec</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Rating:</span>
+                            <span class="detail-value">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="episode-navigation">
+                <h3>More Episodes</h3>
+                <div class="episode-grid">
+                    <a href="#" class="episode-card">
+                        <img src="images/videos/Ep2.jpg" alt="Episode 2">
+                        <span class="episode-number">EP 2</span>
+                        <span class="episode-name">I Said I'm Going to Pilot That Thing! so Beat it</span>
+                    </a>
+                    <a href="#" class="episode-card">
+                        <img src="images/videos/ep3.jpg" alt="Episode 3">
+                        <span class="episode-number">EP 3</span>
+                        <span class="episode-name">Who Do You Think You Are, Having Two Faces?!</span>
+                    </a>
+                    <a href="#" class="episode-card">
+                        <img src="images/videos/ep4.jpg" alt="Episode 4">
+                        <span class="episode-number">EP 4</span>
+                        <span class="episode-name">Having More Than One Is Against the Rules!</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">TENGEN TOPPA <span class="footer-highlight">GURREN LAGANN</span></div>
+            
+            <div class="footer-about">
+                <h3>About the Anime</h3>
+                <p>Tengen Toppa Gurren Lagann is a 2007 mecha anime series that follows Simon and Kamina as they fight against the Spiral King to free humanity from underground villages. Known for its over-the-top action, emotional storytelling, and iconic quotes, it's considered one of the greatest mecha anime of all time.</p>
+                <div class="anime-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">27</span>
+                        <span class="stat-label">Episodes</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">2007</span>
+                        <span class="stat-label">Release</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">8.7</span>
+                        <span class="stat-label">Rating</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="landing.html" target="_blank">About</a>
+                <a href="gallery.html" target="_blank">Gallery</a>
+                <a href="watch.html">Episodes</a>
+                <a href="manga.html" target="_blank">Manga</a>
+                <a href="https://kurogami.com/es/producto/gurren-lagann-estatua-ultimate-premium-masterline-series-14-kamina-simon-yoko-with-lagann-97-cm">Merchandise</a>
+            </div>
+            
+            <div class="newsletter">
+                <h3>Join Team Dai-Gurren!</h3>
+                <p>Get updates on Gurren Lagann news and events</p>
+                <form>
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Team Dai-Gurren. All rights reserved. Just who the hell do you think we are?!</p>
+        </div>
+    </footer>
+
+    <script>
+        // Basic video controls functionality
+        const video = document.getElementById('gurren-video');
+        const playPauseBtn = document.getElementById('play-pause');
+        const progressBar = document.getElementById('progress-bar');
+        const timeDisplay = document.getElementById('time-display');
+        const volumeBtn = document.getElementById('volume-btn');
+        const volumeControl = document.getElementById('volume-control');
+        const fullscreenBtn = document.getElementById('fullscreen');
+
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.textContent = '❚❚';
+            } else {
+                video.pause();
+                playPauseBtn.textContent = '▶';
+            }
+        });
+
+        video.addEventListener('timeupdate', () => {
+            const percent = (video.currentTime / video.duration) * 100;
+            progressBar.value = percent;
+            
+            const currentMins = Math.floor(video.currentTime / 60);
+            const currentSecs = Math.floor(video.currentTime % 60);
+            const totalMins = Math.floor(video.duration / 60);
+            const totalSecs = Math.floor(video.duration % 60);
+            
+            timeDisplay.textContent = 
+                `${currentMins}:${currentSecs < 10 ? '0' : ''}${currentSecs} / ${totalMins}:${totalSecs < 10 ? '0' : ''}${totalSecs}`;
+        });
+
+        progressBar.addEventListener('input', () => {
+            const seekTime = (progressBar.value / 100) * video.duration;
+            video.currentTime = seekTime;
+        });
+
+        volumeBtn.addEventListener('click', () => {
+            video.volume = video.volume > 0 ? 0 : 1;
+            volumeControl.value = video.volume;
+            volumeBtn.textContent = video.volume > 0 ? '🔊' : '🔇';
+        });
+
+        volumeControl.addEventListener('input', () => {
+            video.volume = volumeControl.value;
+            volumeBtn.textContent = volumeControl.value > 0 ? '🔊' : '🔇';
+        });
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                video.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    </script>
+</body>
+</html>

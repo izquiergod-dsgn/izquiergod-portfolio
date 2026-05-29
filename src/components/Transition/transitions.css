@@ -1,0 +1,38 @@
+.trans-slash {
+  position: fixed;
+  top: -8vh;
+  left: 0;
+  width: 110vw;
+  height: 116vh;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 80px) 100%, 0 100%);
+  transform-origin: left center;
+}
+
+.trans-about {
+  position: fixed;
+  height: 28vh;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 110px) 100%, 0 100%);
+  transform: rotate(-18deg);
+  transform-origin: left center;
+}
+
+.trans-vert {
+  position: fixed;
+  top: -6vh;
+  height: 112vh;
+  transform: skewX(-16deg);
+  transform-origin: top;
+}
+
+.trans-default {
+  position: fixed;
+  inset: 0;
+  transform-origin: left center;
+}
+
+/* ── Mobile: simplify transitions to avoid overflow ─── */
+@media (max-width: 600px) {
+  .trans-slash, .trans-about, .trans-vert, .trans-default {
+    left: 0; right: 0;
+  }
+}

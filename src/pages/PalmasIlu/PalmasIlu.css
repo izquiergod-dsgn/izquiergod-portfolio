@@ -1,0 +1,427 @@
+/* ================================================================
+   PALMAS ILU — Instalación digital interactiva
+   ================================================================ */
+
+/* ── Root ──────────────────────────────────────────────────────── */
+.pli-root { position:fixed; inset:0; background:#eaeeed; overflow:hidden; cursor:none; }
+
+/* ── Título fantasma ────────────────────────────────────────────── */
+.pli-main-title { position:fixed; inset:0; z-index:1; pointer-events:none; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; padding:0 2vw; gap:0; }
+.pli-main-title__line { display:block; white-space:nowrap; font-family:var(--font-display,"Helvetica Neue",Impact,sans-serif); font-weight:900; font-style:italic; line-height:1.04; letter-spacing:-0.02em; text-transform:uppercase; color:transparent; -webkit-text-stroke:1.5px rgba(42,34,24,.22); font-size:9vw; }
+
+/* ── Ruido ──────────────────────────────────────────────────────── */
+.pli-noise { position:absolute; inset:0; z-index:0; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E"); background-size:200px 200px; mix-blend-mode:multiply; opacity:.7; }
+
+/* ── Botón regreso ──────────────────────────────────────────────── */
+.pli-back-btn { position:fixed; top:16px; left:16px; z-index:50; width:36px; height:36px; background:#2a2218; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px; color:#F4EFE8; font-weight:900; transition:background var(--ui-mid),transform var(--ui-mid); }
+.pli-back-btn:hover { background:#8B2318; transform:translateX(-3px); }
+
+/* ── Label ──────────────────────────────────────────────────────── */
+.pli-stage-lbl { position:fixed; top:24px; left:50%; transform:translateX(-50%); z-index:5; margin:0; pointer-events:none; font-family:monospace; font-size:7px; letter-spacing:.38em; color:rgba(42,34,24,.22); text-transform:uppercase; white-space:nowrap; }
+
+/* ── Stage ──────────────────────────────────────────────────────── */
+.pli-stage { position:absolute; inset:0; z-index:10; }
+.pli-tree-img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; pointer-events:none; z-index:1; opacity:.95; filter:contrast(1.02) saturate(.92); }
+
+/* ── Panel ──────────────────────────────────────────────────────── */
+.pli-panel { position:absolute; width:200px; z-index:10; cursor:grab; user-select:none; animation:pli-panel-in .75s cubic-bezier(.22,1,.36,1) var(--ed,0s) both; }
+.pli-panel--wide { width:268px; }
+.pli-panel:active { cursor:grabbing; z-index:30; }
+.pli-panel--dim { opacity:.45; filter:blur(.5px); transition:opacity .3s,filter .3s; }
+@keyframes pli-panel-in { from{opacity:0;} to{opacity:1;} }
+.pli-panel__stage { display:inline-block; }
+.pli-panel__inner {
+  background:#eaeeee;
+  background-image:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(139,35,24,.07) 0%,transparent 65%);
+  border:1.1px solid rgba(42,34,24,.58); padding:12px 14px 11px; position:relative;
+  box-shadow:2px 4px 14px rgba(42,34,24,.08); transition:box-shadow .3s,border-color .3s;
+}
+.pli-panel__inner::before { content:''; position:absolute; inset:3.5px; border:.5px solid rgba(42,34,24,.07); pointer-events:none; }
+.pli-panel__inner::after  { content:''; position:absolute; top:0; right:0; border-left:11px solid transparent; border-top:11px solid rgba(42,34,24,.22); transition:border-top-color .25s; }
+.pli-panel:hover .pli-panel__inner::after { border-top-color:#8B2318; }
+.pli-panel:hover .pli-panel__inner { border-color:rgba(42,34,24,.85); box-shadow:4px 8px 26px rgba(42,34,24,.16); }
+.pli-panel__cat { display:block; font-family:monospace; font-size:7px; letter-spacing:.26em; color:#8B2318; text-transform:uppercase; margin-bottom:5px; }
+.pli-panel__title { font-family:var(--font-display,"Helvetica Neue",sans-serif); font-size:15px; font-weight:900; font-style:italic; color:#2a2218; line-height:1.22; white-space:pre-line; margin:0 0 9px; letter-spacing:.02em; transition:color .25s; }
+.pli-panel:hover .pli-panel__title { color:#1a1410; }
+.pli-panel__thumb { width:100%; height:100px; border:.75px solid rgba(42,34,24,.18); background:rgba(42,34,24,.028); display:flex; align-items:center; justify-content:center; margin-bottom:9px; overflow:hidden; position:relative; transition:border-color .25s; }
+.pli-panel--wide .pli-panel__thumb { height:82px; }
+.pli-panel__thumb::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg,transparent,transparent 11px,rgba(42,34,24,.03) 11px,rgba(42,34,24,.03) 12px); }
+.pli-panel:hover .pli-panel__thumb { border-color:rgba(42,34,24,.32); }
+.pli-panel__thumb-lbl { font-family:monospace; font-size:6px; letter-spacing:.12em; color:rgba(42,34,24,.32); text-align:center; padding:4px; position:relative; z-index:1; line-height:1.6; }
+.pli-panel__desc { font-family:monospace; font-size:7px; letter-spacing:.1em; color:rgba(42,34,24,.35); text-transform:uppercase; margin:0; }
+.pli-panel__hint { display:block; text-align:center; margin-top:7px; font-family:monospace; font-size:6.5px; letter-spacing:.22em; color:rgba(139,35,24,.6); opacity:0; transition:opacity .35s; pointer-events:none; }
+.pli-panel:hover .pli-panel__hint { opacity:1; }
+
+/* ================================================================
+   PAPEL — mixin compartido por detail y comic
+   ─────────────────────────────────────────────────────────────────
+   CÓMO FUNCIONA EL mask-image:
+   El PNG /paper-texture.png tiene píxeles
+   transparentes (alpha=0) en los bordes rasgados y píxeles opacos
+   (alpha=1) en el área plana del papel.
+   mask-image usa ese canal alpha para recortar el elemento entero
+   a la silueta real del papel — sin borde rectangular visible.
+
+   Todo lo que salga del área opaca del PNG desaparece automáticamente.
+   Por eso el padding interior (.pli-det__inner / .pli-comic__safe)
+   es generoso: mantiene el contenido dentro del área plana.
+
+   Si la textura se ve muy oscura: sube rgba(255,255,255, X) hacia .35
+   Si se ve muy clara: bájalo hacia .12
+   ================================================================ */
+.pli-paper-base {
+  background-image:
+    linear-gradient(rgba(255,255,255,.22), rgba(255,255,255,.22)),
+    url('/paper-texture.png');
+  background-size: 100% 100%, 100% 100%;
+  background-repeat: no-repeat, no-repeat;
+  border: none;
+  box-shadow: none;
+  /* Recorta a la silueta del papel */
+  -webkit-mask-image: url('/paper-texture.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-image: url('/paper-texture.png');
+          mask-size: 100% 100%;
+          mask-repeat: no-repeat;
+}
+
+/* ================================================================
+   DETAIL OVERLAY
+   ================================================================ */
+.pli-det__overlay { position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; background:rgba(42,34,24,.42); backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); padding:40px 20px; }
+
+.pli-det__paper {
+  width: min(960px, 90%);
+  max-height: 85vh;
+  position: relative;
+  overflow: hidden; /* el scroll lo hace el hijo */
+  /* Textura + brillo + máscara */
+  background-image:
+    linear-gradient(rgba(255,255,255,.22), rgba(255,255,255,.22)),
+    url('/paper-texture.png');
+  background-size: 100% 100%, 100% 100%;
+  background-repeat: no-repeat, no-repeat;
+  border: none; box-shadow: none;
+  -webkit-mask-image: url('/paper-texture.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-image: url('/paper-texture.png');
+          mask-size: 100% 100%;
+          mask-repeat: no-repeat;
+}
+
+/* Zona de scroll sin scrollbar — aquí sucede el desplazamiento */
+.pli-det__scroll { height:100%; max-height:85vh; overflow-y:auto; scrollbar-width:none; }
+.pli-det__scroll::-webkit-scrollbar { display:none; }
+
+/* Padding generoso — contenido queda dentro del área plana del papel.
+   7% vertical, 9% horizontal: asegura ~68px+ de margen en 960px de ancho */
+.pli-det__inner { padding:7% 9%; }
+
+.pli-det__header { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:16px; }
+.pli-det__cat { font-family:monospace; font-size:10px; letter-spacing:2px; color:#8B2318; text-transform:uppercase; display:block; margin-bottom:6px; }
+.pli-det__title { font-family:var(--font-display,"Helvetica Neue",sans-serif); font-size:32px; font-weight:900; font-style:italic; color:#1f1b16; margin:0; line-height:1.1; white-space:pre-line; }
+.pli-det__close { background:rgba(42,34,24,.06); border:1px solid rgba(42,34,24,.28); padding:8px 18px; font-family:monospace; font-size:10px; letter-spacing:1px; color:#2a2218; cursor:pointer; transition:.2s,transform .15s; white-space:nowrap; flex-shrink:0; }
+.pli-det__close:hover { background:#2a2218; color:#F4EFE8; border-color:#2a2218; transform:scale(1.04); }
+.pli-det__rule { width:60px; height:2px; background:#8B2318; margin:18px 0 28px; }
+.pli-det__content { display:flex; flex-direction:column; gap:32px; }
+
+/* Secciones con hover suave */
+.pli-det__sec { display:flex; flex-direction:column; gap:12px; padding:12px 14px; border-left:2px solid transparent; transition:border-color .25s,background .25s; }
+.pli-det__sec:hover { border-left-color:rgba(139,35,24,.3); background:rgba(42,34,24,.025); }
+.pli-det__sec-title { font-family:monospace; font-size:11px; letter-spacing:2px; color:#2a2218; text-transform:uppercase; font-weight:600; margin:0; }
+.pli-det__sec-rule { width:40px; height:1px; background:#8B2318; }
+.pli-det__body { font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#2a2218; border-left:2px solid #8B2318; padding-left:18px; margin:0; font-style:italic; }
+
+/* Slots */
+.pli-slot-grid { display:grid; gap:14px; margin:6px 0; }
+.pli-slot-grid--4 { grid-template-columns:repeat(4,1fr); }
+.pli-slot-grid--3 { grid-template-columns:repeat(3,1fr); }
+.pli-slot-grid--2 { grid-template-columns:repeat(2,1fr); }
+.pli-slot { aspect-ratio:4/3; background:rgba(42,34,24,.06); border:1px solid rgba(42,34,24,.18); display:flex; align-items:center; justify-content:center; overflow:hidden; transition:border-color .22s,transform .22s,box-shadow .22s; }
+.pli-slot:hover { border-color:rgba(42,34,24,.4); transform:scale(1.025); box-shadow:0 4px 12px rgba(42,34,24,.1); }
+.pli-slot--wide { aspect-ratio:16/7; grid-column:1/-1; }
+.pli-slot img { width:100%; height:100%; object-fit:cover; display:block; }
+.pli-slot__lbl { font-family:monospace; font-size:9px; color:rgba(42,34,24,.42); padding:6px 10px; text-align:center; line-height:1.5; }
+
+/* ================================================================
+   COMIC READER
+   ================================================================ */
+.pli-comic__overlay { position:fixed; inset:0; z-index:10000; display:flex; align-items:flex-start; justify-content:center; padding:32px 16px; background:rgba(42,34,24,.42); backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); }
+.pli-comic__backdrop { position:fixed; inset:0; background:transparent; cursor:pointer; z-index:1; }
+
+.pli-comic__box {
+  position: relative; z-index: 2;
+  width: min(1100px, 100%); max-height: 85vh;
+  overflow: hidden; display: flex; flex-direction: column;
+  border: none; box-shadow: none;
+  /* Textura + brillo + máscara — idéntico al detail */
+  background-image:
+    linear-gradient(rgba(255,255,255,.22), rgba(255,255,255,.22)),
+    url('/paper-texture.png');
+  background-size: 100% 100%, 100% 100%;
+  background-repeat: no-repeat, no-repeat;
+  -webkit-mask-image: url('/paper-texture.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-image: url('/paper-texture.png');
+          mask-size: 100% 100%;
+          mask-repeat: no-repeat;
+}
+
+/* Área segura interior — padding generoso para quedarse dentro del papel.
+   6% × 6%: en 1100px ancho = ~66px por lado; en 85vh alto = ~46px arriba/abajo */
+.pli-comic__safe {
+  padding: 5% 6%;
+  display: flex; flex-direction: column; flex: 1; min-height: 0;
+  gap: 0;
+}
+
+.pli-comic__header { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-shrink:0; margin-bottom:0; }
+.pli-comic__cat { font-family:monospace; font-size:9px; letter-spacing:2px; color:#8B2318; text-transform:uppercase; display:block; margin-bottom:5px; }
+.pli-comic__title { font-family:var(--font-display,"Helvetica Neue",sans-serif); font-size:24px; font-weight:900; font-style:italic; color:#1f1b16; margin:0; }
+.pli-comic__close { background:rgba(42,34,24,.06); border:1px solid rgba(42,34,24,.26); padding:6px 16px; font-family:monospace; font-size:9px; letter-spacing:1px; color:#2a2218; cursor:pointer; transition:.2s,transform .15s; white-space:nowrap; flex-shrink:0; }
+.pli-comic__close:hover { background:#2a2218; color:#F4EFE8; transform:scale(1.04); }
+.pli-comic__rule { width:50px; height:2px; background:#8B2318; margin:14px 0; flex-shrink:0; }
+
+.pli-comic__body { display:grid; grid-template-columns:1fr 260px; gap:0; flex:1; min-height:0; overflow:hidden; }
+
+/* Reader y aside sin padding lateral propio — lo maneja .pli-comic__safe */
+.pli-comic__reader { display:flex; flex-direction:column; gap:18px; overflow-y:auto; scrollbar-width:none; padding-right:3%; padding-bottom:2%; }
+.pli-comic__reader::-webkit-scrollbar { display:none; }
+.pli-comic__chapter { font-family:monospace; font-size:10px; letter-spacing:2px; color:rgba(42,34,24,.52); text-transform:uppercase; margin:0; }
+.pli-comic__page-slot { width:100%; aspect-ratio:3/4; background:rgba(42,34,24,.06); border:1px solid rgba(42,34,24,.18); display:flex; align-items:center; justify-content:center; transition:border-color .2s; }
+.pli-comic__page-slot:hover { border-color:rgba(42,34,24,.35); }
+.pli-comic__slot-lbl { font-family:monospace; font-size:10px; color:rgba(42,34,24,.42); }
+.pli-comic__page-img { width:100%; height:100%; object-fit:contain; display:block; }
+.pli-comic__nav { display:flex; justify-content:center; gap:20px; }
+.pli-comic__btn { background:rgba(42,34,24,.06); border:1px solid rgba(42,34,24,.26); padding:6px 18px; font-family:monospace; font-size:9px; letter-spacing:1px; color:#2a2218; cursor:pointer; transition:.18s,transform .15s; }
+.pli-comic__btn:hover:not(:disabled) { background:#2a2218; color:#F4EFE8; transform:translateY(-1px); }
+.pli-comic__btn:disabled { opacity:.28; cursor:default; }
+.pli-comic__count { font-family:monospace; font-size:10px; color:rgba(42,34,24,.52); display:flex; align-items:center; }
+
+.pli-comic__aside { border-left:1px solid rgba(42,34,24,.14); padding-left:4%; overflow-y:auto; display:flex; flex-direction:column; scrollbar-width:none; padding-bottom:2%; }
+.pli-comic__aside::-webkit-scrollbar { display:none; }
+.pli-comic__aside-sec { padding:16px 0; border-bottom:1px solid rgba(42,34,24,.08); }
+.pli-comic__aside-sec:last-child { border-bottom:none; }
+.pli-comic__aside-h { font-family:monospace; font-size:8px; letter-spacing:2px; color:#8B2318; text-transform:uppercase; margin:0 0 12px; font-weight:600; }
+.pli-comic__sk-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.pli-comic__sk-slot { aspect-ratio:3/4; background:rgba(42,34,24,.06); border:1px solid rgba(42,34,24,.18); display:flex; align-items:center; justify-content:center; transition:border-color .2s,transform .2s; }
+.pli-comic__sk-slot:hover { border-color:rgba(42,34,24,.38); transform:scale(1.03); }
+.pli-comic__sk-lbl { font-family:monospace; font-size:7px; color:rgba(42,34,24,.42); text-align:center; padding:4px; line-height:1.5; }
+.pli-comic__sk-img { width:100%; height:100%; object-fit:cover; display:block; }
+.pli-comic__extra-slot { width:100%; aspect-ratio:16/9; background:rgba(42,34,24,.06); border:1px solid rgba(42,34,24,.18); display:flex; align-items:center; justify-content:center; transition:border-color .2s; }
+.pli-comic__extra-slot:hover { border-color:rgba(42,34,24,.35); }
+.pli-comic__extra-img { width:100%; height:100%; object-fit:cover; display:block; }
+.pli-comic__pages { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.pli-comic__pg { width:34px; height:44px; background:rgba(42,34,24,.06); border:1px solid rgba(42,34,24,.2); cursor:pointer; font-family:monospace; font-size:11px; color:#2a2218; transition:.12s,transform .12s; }
+.pli-comic__pg:hover { background:rgba(42,34,24,.12); transform:scale(1.06); }
+.pli-comic__pg--on { background:#2a2218; color:#F4EFE8; border-color:#2a2218; }
+.pli-comic__note { font-family:Georgia,serif; font-size:12px; line-height:1.65; color:#2a2218; font-style:italic; border-left:2px solid #8B2318; padding-left:12px; margin:0; }
+
+/* ── Cursor en overlays ─────────────────────────────────────────── */
+.pli-det__overlay,
+.pli-comic__overlay {
+  cursor: default;
+}
+.pli-det__close,
+.pli-comic__close,
+.pli-comic__btn,
+.pli-comic__pg,
+.pli-slot,
+.pli-comic__backdrop {
+  cursor: pointer;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width:768px) {
+  /* Panels: smaller cards */
+  .pli-panel { width:140px; } .pli-panel--wide { width:184px; }
+  .pli-panel__title { font-size:13px; }
+
+  /* Comic reader: stack vertically */
+  .pli-comic__body  { grid-template-columns:1fr; }
+  .pli-comic__aside { border-left:none; border-top:1px solid rgba(42,34,24,.1);
+                      padding-left:0; padding-top:3%; }
+
+  /* Image grids: 2 columns */
+  .pli-slot-grid--4,.pli-slot-grid--3 { grid-template-columns:repeat(2,1fr); }
+
+  /* Detail overlay */
+  .pli-det__paper  { width:96vw; max-height:94vh; border-radius:4px; }
+  .pli-det__inner  { padding:8% 10%; }
+  .pli-det__title  { font-size:26px; }
+
+  /* Comic */
+  .pli-comic__box  { width:96vw; max-height:94vh; }
+  .pli-comic__safe { padding:6% 7%; }
+
+  /* Título de fondo */
+  .pli-main-title__line { font-size:clamp(24px,14vw,72px) !important; }
+
+  /* Palm parts list */
+  .pli-det__partes { gap:12px; }
+}
+@media (max-width:480px) {
+  .pli-panel { width:120px; } .pli-panel--wide { width:158px; }
+  .pli-slot-grid--3,.pli-slot-grid--2 { grid-template-columns:1fr; }
+  .pli-det__header { flex-direction:column; gap:8px; }
+  .pli-det__close  { align-self:flex-start; }
+}
+/* ── Imagen real en slots ── */
+.pli-slot-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+}
+.pli-slot-img--wide {
+  aspect-ratio: 16/9;
+  height: auto;
+}
+.pli-comic__page-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.pli-comic__sk-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.pli-comic__extra-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Miniatura real en la tarjeta ──────────────────────────────── */
+.pli-panel__thumb {
+  position: relative;
+  overflow: hidden;
+}
+.pli-panel__thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Filtro editorial sobre la imagen en estado normal */
+  filter: sepia(0.25) brightness(0.88);
+  transition: filter 0.35s ease, transform 0.35s ease;
+}
+.pli-panel__inner:hover .pli-panel__thumb-img {
+  filter: sepia(0) brightness(1);
+  transform: scale(1.04);
+}
+
+/* ── Imagen principal dentro del detalle ───────────────────────── */
+.pli-det__img-main {
+  width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 12px;
+  background: rgba(0,0,0,0.06);
+}
+
+/* ── Lista de partes de la palma ───────────────────────────────── */
+.pli-det__partes {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 16px;
+}
+.pli-det__parte {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(42,34,24,0.12);
+}
+.pli-det__parte:last-child { border-bottom: none; }
+.pli-det__parte-n {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--or);
+  flex-shrink: 0;
+  padding-top: 2px;
+  width: 24px;
+}
+.pli-det__parte strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #2a2218;
+  margin-bottom: 4px;
+}
+.pli-det__parte .pli-det__body {
+  margin-top: 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ── Mobile grid (replaces draggable panels) ─── */
+.pli-mobile-grid {
+  position: absolute;
+  top: 40px;
+  left: 0; right: 0; bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 16px;
+  overflow-y: auto;
+  z-index: 20;
+}
+.pli-mobile-card {
+  background: rgba(244,239,232,0.92);
+  border: none;
+  border-left: 3px solid var(--or);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  text-align: left;
+  backdrop-filter: blur(4px);
+  transition: transform 0.2s ease, background 0.2s;
+}
+.pli-mobile-card:active { transform: scale(0.97); }
+.pli-mobile-card__cat {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--or);
+}
+.pli-mobile-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(13px, 4vw, 17px);
+  font-weight: 900;
+  font-style: italic;
+  color: #2a2218;
+  line-height: 1.1;
+  white-space: pre-line;
+}
+.pli-mobile-card__img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  filter: sepia(0.2) brightness(0.9);
+}
+.pli-mobile-card__desc {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  color: rgba(42,34,24,0.55);
+  text-transform: uppercase;
+}

@@ -1,0 +1,160 @@
+.contact-screen {
+  background: var(--re);
+}
+
+.contact-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--re);
+}
+
+/* Header */
+.contact-header {
+  position: absolute; top: 0; left: 0; right: 0; height: 40px;
+  z-index: 30; display: flex; align-items: stretch;
+  border-bottom: 2px solid var(--bk);
+  background: rgba(8,8,6,.88);
+}
+
+.contact-back {
+  display: flex; align-items: center; padding: 0 16px;
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: .2em; text-transform: uppercase;
+  background: var(--bk); color: var(--or);
+  border: none; cursor: pointer; font-weight: 700;
+  border-right: 2px solid var(--re);
+  transition: color .1s;
+}
+.contact-back:hover { color: var(--wh); }
+
+.contact-header-t {
+  display: flex; align-items: center; padding: 0 20px;
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--re);
+}
+
+/* Ghost masivo de fondo (CAOS) */
+.contact-ghost {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  font-family: var(--font-display);
+  font-weight: 900; font-style: italic;
+  font-size: clamp(80px, 22vw, 280px);
+  color: rgba(0,0,0,.08);
+  letter-spacing: -.04em;
+  pointer-events: none; user-select: none;
+  z-index: 1; white-space: nowrap;
+}
+
+/* Título grande a la izquierda */
+.contact-title {
+  position: absolute;
+  top: 50%; left: 5vw;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex; flex-direction: column;
+  font-family: var(--font-display);
+  font-weight: 900; font-style: italic;
+  font-size: clamp(52px, 8vw, 120px);
+  line-height: .84; letter-spacing: -.02em;
+  color: var(--bk);
+  pointer-events: none; user-select: none;
+}
+.ct-outline {
+  color: transparent;
+  -webkit-text-stroke: 3px var(--bk);
+}
+
+/* Menú P5 vertical — en el centro/derecha */
+.contact-menu {
+  position: absolute;
+  top: 40px; right: 0; bottom: 0;
+  width: 44vw;
+  z-index: 20;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  background: rgba(8,8,6,.92);
+  border-left: 3px solid var(--bk);
+  padding: 28px 0;
+}
+
+.ct-item {
+  display: flex; align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  text-decoration: none;
+  opacity: 0; transform: translateX(32px);
+  transition:
+    opacity .32s ease,
+    transform .32s cubic-bezier(.22,1,.36,1),
+    background .1s;
+}
+.ct-item.mounted { opacity: 1 !important; transform: translateX(0) !important; }
+.ct-item:hover, .ct-item.active { background: rgba(187,16,16,.12); }
+
+.ct-bul {
+  width: 40px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px 0;
+  font-size: 13px; color: var(--re);
+  opacity: 0; transition: opacity .15s;
+}
+.ct-item.active .ct-bul { opacity: 1; }
+
+.ct-label {
+  flex: 1;
+  font-family: var(--font-display);
+  font-weight: 900; font-style: italic;
+  font-size: clamp(32px, 4vw, 58px);
+  line-height: .9; color: var(--wh);
+  padding: 12px 20px 12px 0;
+  transition: color .1s;
+}
+.ct-item.active .ct-label { color: var(--re); }
+
+.ct-val {
+  font-family: var(--font-mono); font-size: 8.5px;
+  letter-spacing: .12em; color: rgba(255,255,255,.18);
+  padding-right: 12px; white-space: nowrap;
+  transition: color .1s;
+}
+.ct-item.active .ct-val { color: rgba(255,255,255,.4); }
+
+.ct-arr {
+  font-size: 18px; color: rgba(255,255,255,.12);
+  padding-right: 20px;
+  transition: transform .2s, color .15s;
+}
+.ct-item.active .ct-arr {
+  transform: translateX(4px);
+  color: var(--re);
+}
+
+/* Footer */
+.contact-footer {
+  position: absolute; bottom: 16px; left: 5vw;
+  z-index: 10;
+  display: flex; flex-direction: column; gap: 3px;
+  pointer-events: none;
+}
+.contact-footer span {
+  font-family: var(--font-mono); font-size: 7.5px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(0,0,0,.35);
+}
+.ct-ft-joke { color: rgba(0,0,0,.2) !important; }
+
+/* ── Mobile ─────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Ghost letter behind: smaller */
+  .contact-ghost { font-size: clamp(50px, 30vw, 140px); }
+  /* Link list: full width */
+  .contact-links-wrap { width: 90vw; }
+  .contact-link-label { font-size: clamp(24px, 8vw, 52px); }
+}
+@media (max-width: 480px) {
+  .contact-ghost { display: none; }
+  .contact-meta  { display: none; }
+  .contact-link-label { font-size: clamp(22px, 7vw, 40px); }
+  .contact-links-wrap { width: 95vw; padding-left: 0; }
+}

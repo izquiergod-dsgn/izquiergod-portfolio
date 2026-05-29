@@ -1,0 +1,102 @@
+/*
+  sys-back — botón de regreso sistémico
+  ──────────────────────────────────────────────────────────────────
+  Identidad compartida: borde izquierdo de acento + monospace uppercase.
+  El acento naranja (o el color del mundo) actúa como la firma del sistema.
+
+  Dos modos:
+    .sys-back--fixed  → position fixed top-left, sobre la página
+    .sys-back--inline → fluye en el flex de su header padre
+*/
+
+/* ── Variables con defaults ── */
+.sys-back {
+  --sys-back-accent: var(--or);
+  --sys-back-bg:     rgba(8, 8, 6, 0.82);
+  --sys-back-color:  rgba(244, 241, 234, 0.65);
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 16px 0 10px;
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  background: var(--sys-back-bg);
+  color: var(--sys-back-color);
+  border: none;
+  border-left: 3px solid var(--sys-back-accent);
+
+  cursor: pointer;
+  transition:
+    transform     var(--ui-mid),
+    border-color  var(--ui-mid),
+    background    var(--ui-mid),
+    color         var(--ui-mid);
+}
+
+/* ── Modo flotante — páginas sin header ── */
+.sys-back--fixed {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ── Modo inline — flex child dentro de header ── */
+.sys-back--inline {
+  position: static;
+  flex: 0 0 auto;
+  /* altura completa del header padre */
+  align-self: stretch;
+  border-left: none;
+  border-right: 3px solid var(--sys-back-accent);
+  padding: 0 16px;
+}
+
+/* ── Hover — compartido en ambos modos ── */
+.sys-back:hover {
+  transform: translateX(-3px);
+  color: var(--wh);
+}
+.sys-back--fixed:hover {
+  background: rgba(8, 8, 6, 0.96);
+  border-color: var(--sys-back-accent);
+}
+.sys-back--inline:hover {
+  opacity: 0.82;
+}
+
+/* ── Arrow — naranja de acento, se mueve un poco más ── */
+.sys-back__arrow {
+  font-size: 9px;
+  color: var(--sys-back-accent);
+  transition: transform var(--ui-mid);
+  display: inline-block;
+  flex-shrink: 0;
+}
+.sys-back:hover .sys-back__arrow {
+  transform: translateX(-2px);
+}
+
+.sys-back__label {
+  display: inline-block;
+}
+
+.sys-back:focus-visible {
+  outline: 2px solid var(--sys-back-accent);
+  outline-offset: 3px;
+}
+
+/* ── Mobile ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .sys-back--fixed { top: 8px; left: 8px; padding: 5px 8px; }
+  .sys-back__label { font-size: 7px; }
+}

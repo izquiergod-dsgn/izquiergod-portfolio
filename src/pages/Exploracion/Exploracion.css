@@ -1,0 +1,697 @@
+/* =============================================
+   Exploracion.css — Editorial Spread
+   Referencia: póster editorial japonés underground
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,900;1,900&family=Space+Mono&family=Noto+Sans+JP:wght@900&display=swap');
+
+/* ══════════════════════════════════════════
+   TOKENS
+   ══════════════════════════════════════════ */
+:root {
+  --s-bg:  #398cbd;
+  --s-ink: #0D0D0D;
+  --r-bg:  #0D0B08;
+  --r-ink: #C4A882;
+
+  --cond: 'Barlow Condensed', Impact, sans-serif;
+  --mono: 'Space Mono', monospace;
+  --jp:   'Noto Sans JP', sans-serif;
+
+  --tr:   0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  --tr-f: 0.65s ease;
+}
+
+/* ══════════════════════════════════════════
+   ROOT
+   ══════════════════════════════════════════ */
+.ex-root {
+  position: fixed; inset: 0;
+  background: var(--s-bg);
+  color: var(--s-ink);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  font-family: var(--mono);
+  transition: background var(--tr), color var(--tr);
+}
+.ex-root.s-rd {
+  background: var(--r-bg);
+  color: var(--r-ink);
+}
+
+/* ══════════════════════════════════════════
+   ATMOSPHERIC LAYERS
+   ══════════════════════════════════════════ */
+
+/* Grain */
+.ex-grain {
+  position: fixed; inset: 0; z-index: 300;
+  pointer-events: none;
+  background-size: 200px 200px;
+  opacity: 0.52; mix-blend-mode: overlay;
+  transition: opacity var(--tr-f);
+}
+.s-fs .ex-grain { opacity: 0.1; }
+
+/* Dust particles canvas */
+.ex-dust {
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none;
+  width: 100%; height: 100%;
+}
+
+/* ══════════════════════════════════════════
+   CINEMATIC TRANSITION SYSTEM
+   ══════════════════════════════════════════ */
+
+/* Wipe bar — vertical ink sweep covering the spread */
+.ex-transit-bar {
+  position: absolute; inset: 0; z-index: 200;
+  pointer-events: none;
+  background: var(--s-ink);
+  clip-path: inset(100% 0 0 0);
+  opacity: 0;
+}
+.s-rd .ex-transit-bar { background: #080604; }
+
+.s-transit .ex-transit-bar {
+  opacity: 1;
+  animation: ex-bar-wipe 0.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes ex-bar-wipe {
+  0%   { clip-path: inset(0 0 100% 0); }   /* off top */
+  42%  { clip-path: inset(0 0 0%   0); }   /* fully covering */
+  58%  { clip-path: inset(0 0 0%   0); }   /* hold */
+  100% { clip-path: inset(100% 0 0 0); }   /* off bottom */
+}
+
+/* RGB split on spread during transition — Stage 1 destabilize */
+.s-transit .ex-spread {
+  animation: ex-rgb-split 0.9s ease forwards;
+}
+@keyframes ex-rgb-split {
+  0%   { filter: none; transform: none; }
+  18%  { filter: drop-shadow(3px 0 0 rgba(255,50,0,0.42))
+                 drop-shadow(-3px 0 0 rgba(0,180,255,0.42));
+         transform: skewX(0.3deg); }
+  36%  { filter: drop-shadow(7px 0 0 rgba(255,50,0,0.6))
+                 drop-shadow(-7px 0 0 rgba(0,180,255,0.6));
+         transform: skewX(-0.4deg) scaleY(0.995); }
+  52%  { filter: drop-shadow(2px 0 0 rgba(255,50,0,0.2));
+         transform: skewX(0.1deg); }
+  68%  { filter: none; transform: none; }
+  100% { filter: none; transform: none; }
+}
+
+/* Stage 3: content reconstruction — s-enter class */
+@keyframes ex-title-in {
+  from { opacity: 0; transform: translateY(-20px) skewY(-1.5deg); }
+  to   { opacity: 1; transform: translateY(0) skewY(0); }
+}
+@keyframes ex-jp-in {
+  from { opacity: 0; }
+  to   { opacity: 0.1; }
+}
+@keyframes ex-text-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ex-card-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ex-char-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+.s-enter .ex-title-eyebrow { animation: ex-title-in 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.02s; }
+.s-enter .ex-title-main    { animation: ex-title-in 0.62s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.04s; }
+.s-enter .ex-textblock     { animation: ex-text-in  0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.11s; }
+.s-enter .ex-infocard      { animation: ex-card-in  0.5s  cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.2s;  }
+.s-enter .ex-chapter       { animation: ex-text-in  0.5s  ease both; animation-delay: 0.15s; }
+/* JP enter: override breathe briefly */
+.s-enter .ex-title-jp      { animation: ex-jp-in 0.85s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0s; }
+/* Char enter: overrides float briefly */
+.s-enter .ex-char          { animation: ex-char-in 0.72s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.06s; }
+
+/* ══════════════════════════════════════════
+   IDLE ANIMATION SYSTEM
+   ══════════════════════════════════════════ */
+
+/* Character floating — subtle vertical drift */
+@keyframes ex-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  38%      { transform: translateY(-7px) rotate(0.12deg); }
+  72%      { transform: translateY(-4px) rotate(-0.08deg); }
+}
+.ex-char { animation: ex-float 7.5s ease-in-out infinite; }
+/* s-enter overrides float (already declared above) */
+.s-fs .ex-char { animation: none; }
+
+/* Scanline slow drift */
+@keyframes ex-scl-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 0 32px; }
+}
+.ex-scl { animation: ex-scl-drift 2.6s linear infinite; }
+.s-fs .ex-scl { animation: none; }
+
+/* JP breathing (overridden per state, overridden by s-enter) */
+@keyframes ex-jp-breathe-s {
+  0%, 100% { opacity: 0.22; }
+  50%      { opacity: 0.14; }
+}
+@keyframes ex-jp-breathe-r {
+  0%, 100% { opacity: 0.18; }
+  50%      { opacity: 0.11; }
+}
+.ex-title-jp      { animation: ex-jp-breathe-s 9s  ease-in-out infinite; }
+.s-rd .ex-title-jp { animation: ex-jp-breathe-r 9s ease-in-out infinite; }
+.s-fs .ex-title-jp { animation: none; }
+/* s-enter overrides breathe (declared above, comes later in source = wins on same specificity) */
+
+/* Border flicker — subtle print instability */
+@keyframes ex-flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93%  { opacity: 0.74; }
+  95%  { opacity: 0.92; }
+  96.5%{ opacity: 0.58; }
+  98%  { opacity: 1; }
+}
+.ex-left  { animation: ex-flicker 15s ease-in-out infinite; }
+.ex-right { animation: ex-flicker 19s 5s ease-in-out infinite; }
+.s-fs .ex-left, .s-fs .ex-right { animation: none; }
+
+/* ══════════════════════════════════════════
+   TOP BAR
+   ══════════════════════════════════════════ */
+.ex-topbar {
+  flex-shrink: 0; height: 34px;
+  display: flex; align-items: stretch;
+  border-bottom: 1.5px solid currentColor;
+  position: relative; z-index: 100;
+  overflow: hidden;
+  transition: border-color var(--tr);
+}
+
+.ex-back {
+  flex: 0 0 auto; padding: 0 18px;
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 700; white-space: nowrap;
+  border: none; border-right: 1.5px solid currentColor;
+  cursor: pointer;
+  background: var(--s-ink); color: var(--s-bg);
+  transition: background var(--tr), color var(--tr), border-color var(--tr);
+}
+.s-rd .ex-back { background: var(--r-ink); color: var(--r-bg); }
+.ex-back:hover { opacity: 0.72; transform: translateX(-3px); transition: background var(--ui-mid), color var(--ui-mid), opacity var(--ui-mid), transform var(--ui-mid) !important; }
+
+/* ── BackBtn sistémico — se adapta a los dos modos de Exploracion ──────────────
+   El CSS cascade sobreescribe las CSS vars del componente según el modo activo.
+   Modo normal: ink oscuro sobre fondo azul. Modo sepia: caña cálida sobre oscuro.
+───────────────────────────────────────────────────────────────────────────────── */
+.ex-topbar .sys-back {
+  /* Modo normal (azul): ink oscuro sobre fondo azul, acento azul */
+  --sys-back-bg:     var(--s-ink);
+  --sys-back-color:  rgba(57, 140, 189, 0.85);   /* s-bg con opacidad */
+  --sys-back-accent: var(--s-bg);                 /* azul — no naranja */
+  border-right: 3px solid var(--sys-back-accent);
+  border-left: none;
+  transition:
+    background var(--tr),
+    color       var(--tr),
+    border-color var(--tr),
+    transform   var(--ui-mid),
+    opacity     var(--ui-mid);
+}
+.ex-root.s-rd .ex-topbar .sys-back {
+  /* Modo sepia: caña cálida sobre oscuro, acento terracota */
+  --sys-back-bg:     var(--r-ink);
+  --sys-back-color:  var(--r-bg);
+  --sys-back-accent: #a07040;
+}
+.ex-topbar .sys-back:hover {
+  opacity: 0.75;
+  transform: translateX(-3px);
+}
+
+.ex-top-words {
+  flex: 1; display: flex;
+  align-items: center; justify-content: space-between;
+  padding: 0 22px; overflow: hidden; white-space: nowrap;
+}
+
+/* Top word entrance animation — triggers on key change */
+@keyframes ex-word-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ex-top-word {
+  display: inline-block;
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  opacity: 0;
+  animation: ex-word-in 0.5s ease forwards;
+}
+
+/* ══════════════════════════════════════════
+   SPREAD
+   ══════════════════════════════════════════ */
+.ex-spread {
+  flex: 1; display: flex;
+  position: relative; overflow: hidden; min-height: 0;
+}
+
+/* ══════════════════════════════════════════
+   COLUMNA IZQUIERDA
+   ══════════════════════════════════════════ */
+.ex-left {
+  flex: 0 0 22%; min-width: 120px;
+  display: flex; flex-direction: column;
+  padding: 8px 0 8px 10px;
+  border-right: 1.5px solid currentColor;
+  position: relative; z-index: 5;
+  transition: border-color var(--tr), opacity var(--tr), transform var(--tr);
+}
+.s-fs .ex-left { opacity: 0; transform: translateX(-100%); pointer-events: none; }
+
+.ex-panel-row {
+  flex: 1; display: flex; min-height: 0;
+  border-bottom: 1px solid currentColor;
+  transition: border-color var(--tr);
+}
+.ex-panel-row:last-child { border-bottom: none; }
+
+.ex-panel {
+  flex: 1; position: relative; overflow: hidden; min-height: 0;
+  transition: transform 0.35s ease, background 0.35s;
+}
+.ex-panel::before {
+  content: ''; position: absolute; inset: 0; opacity: 0.09;
+  background-image:
+    repeating-linear-gradient( 45deg, currentColor 0, currentColor 1px, transparent 1px, transparent 11px),
+    repeating-linear-gradient(-45deg, currentColor 0, currentColor 1px, transparent 1px, transparent 11px);
+  transition: opacity 0.3s;
+}
+.ex-panel-row:hover .ex-panel::before { opacity: 0.19; }
+.ex-panel-row:hover .ex-panel { transform: scaleX(1.012); }
+
+.ex-panel-label {
+  position: absolute; top: 5px; left: 7px;
+  font-size: 7.5px; font-family: var(--mono);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  opacity: 0.58; z-index: 2;
+  transition: opacity 0.3s;
+}
+.ex-panel-row:hover .ex-panel-label { opacity: 0.9; }
+
+.ex-panel-num {
+  position: absolute; bottom: 4px; right: 6px;
+  font-family: var(--cond); font-weight: 900;
+  font-size: 46px; line-height: 1;
+  letter-spacing: -0.04em; opacity: 0.05;
+  user-select: none; transition: opacity 0.3s;
+}
+.ex-panel-row:hover .ex-panel-num { opacity: 0.1; }
+
+.ex-panel-vlabel {
+  flex: 0 0 15px;
+  writing-mode: vertical-rl;
+  font-family: var(--mono); font-size: 6.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  opacity: 0.38;
+  display: flex; align-items: center; justify-content: center;
+  border-left: 1px solid currentColor;
+  transition: border-color var(--tr), opacity 0.3s;
+}
+.ex-panel-row:hover .ex-panel-vlabel { opacity: 0.7; }
+
+/* ══════════════════════════════════════════
+   COLUMNA CENTRAL
+   ══════════════════════════════════════════ */
+.ex-center {
+  flex: 1; position: relative; overflow: visible; min-height: 0;
+}
+
+/* Halftone */
+.ex-ht {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.26) 1px, transparent 1px);
+  background-size: 5px 5px;
+  transition: opacity var(--tr-f);
+}
+.s-rd .ex-ht {
+  background-image: radial-gradient(circle, rgba(196,168,130,0.13) 1px, transparent 1px);
+}
+.s-fs .ex-ht { opacity: 0; }
+
+/* Scanlines */
+.ex-scl {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent 0, transparent 3px,
+    rgba(0,0,0,0.036) 3px, rgba(0,0,0,0.036) 4px
+  );
+  /* animation declared in IDLE section */
+}
+
+/* Vignette */
+.ex-vig {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: radial-gradient(ellipse 88% 90% at 50% 50%,
+    transparent 44%, rgba(0,0,0,0.46) 100%);
+  transition: opacity var(--tr-f);
+}
+.s-rd .ex-vig {
+  background: radial-gradient(ellipse 80% 85% at 50% 50%,
+    transparent 34%, rgba(0,0,0,0.76) 100%);
+}
+.s-fs .ex-vig { opacity: 0; }
+
+/* Eyebrow — "ILUSTRACIÓN EDITORIAL" */
+.ex-title-eyebrow {
+  position: absolute; top: 10px; left: 10px;
+  font-family: var(--cond); font-weight: 900;
+  font-size: clamp(14px, 2.2vw, 24px);
+  letter-spacing: 0.1em; opacity: 0.55; z-index: 8;
+  pointer-events: none;
+  transition: opacity var(--tr);
+}
+.s-fs .ex-title-eyebrow { opacity: 0; }
+
+/* Main title — SUPERMAN / REDRAW */
+.ex-title-main {
+  position: absolute; top: 28px; left: 4px;
+  font-family: var(--cond); font-weight: 900; font-style: italic;
+  font-size: clamp(68px, 13vw, 148px);
+  line-height: 0.84; letter-spacing: -0.03em;
+  z-index: 8; pointer-events: none;
+  transition: opacity var(--tr), color var(--tr);
+}
+.s-fs .ex-title-main { opacity: 0; }
+
+/* JP — GIANT background texture, transform via JS parallax */
+.ex-title-jp {
+  position: absolute; top: -8%; left: -3%;
+  font-family: var(--jp); font-weight: 900;
+  font-size: clamp(120px, 23vw, 260px);
+  line-height: 0.88; letter-spacing: -0.02em;
+  white-space: nowrap;
+  z-index: 3; pointer-events: none;
+  will-change: transform;
+  /* animation (breathe) declared in IDLE section */
+  transition: color var(--tr);
+}
+.s-fs .ex-title-jp { opacity: 0 !important; }
+
+/* Text block — editorial caption */
+.ex-textblock {
+  position: absolute; top: 38%; right: 8px; width: 36%;
+  font-family: var(--mono); font-size: 8.5px; line-height: 1.9;
+  text-align: justify; z-index: 15; pointer-events: none;
+  border-left: 1px solid currentColor;
+  padding-left: 10px;
+  opacity: 0.65;
+  transition: opacity var(--tr), border-color var(--tr);
+}
+.s-fs .ex-textblock { opacity: 0; }
+
+.ex-text-rule {
+  display: block; width: 22px; height: 1.5px;
+  background: currentColor; opacity: 0.6;
+  margin-bottom: 7px; margin-left: -10px;
+}
+
+/* Info card */
+.ex-infocard {
+  position: absolute; bottom: 12px; left: 10px;
+  border: 1.5px solid currentColor;
+  padding: 6px 10px; z-index: 25; min-width: 115px;
+  transition: border-color var(--tr), opacity var(--tr);
+}
+.s-fs .ex-infocard { opacity: 0; pointer-events: none; }
+
+.ex-info-jp {
+  font-family: var(--jp); font-weight: 900;
+  font-size: 15px; line-height: 1; margin-bottom: 4px;
+}
+.ex-info-detail {
+  font-family: var(--mono); font-size: 7.5px;
+  line-height: 1.65; opacity: 0.55; letter-spacing: 0.08em;
+}
+
+/* Chapter label — vertical */
+.ex-chapter {
+  position: absolute; top: 14px; right: 8px;
+  font-family: var(--mono); font-size: 7.5px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  opacity: 0.38; writing-mode: vertical-rl;
+  z-index: 10; pointer-events: none;
+  transition: opacity var(--tr);
+}
+.s-fs .ex-chapter { opacity: 0; }
+
+/* Annotation scribbles */
+.ex-ann {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 7;
+  transition: opacity var(--tr-f);
+}
+.s-fs .ex-ann { opacity: 0; }
+
+/* ══════════════════════════════════════════
+   PERSONAJE — absolute sobre spread
+   invade la columna izquierda
+   ══════════════════════════════════════════ */
+.ex-char {
+  position: absolute; left: 15%; top: -4%;
+  height: 110%; width: auto; z-index: 20;
+  cursor: crosshair; overflow: hidden;
+  filter: drop-shadow(0px 22px 44px rgba(0,0,0,0.52));
+  /* animation: ex-float (declared in IDLE section) */
+  transition: opacity var(--tr-f), filter var(--tr);
+}
+.s-rd .ex-char  { filter: drop-shadow(0px 22px 55px rgba(0,0,0,0.82)); }
+.s-fs .ex-char  { opacity: 0; pointer-events: none; animation: none; }
+
+.ex-char-color {
+  height: 100%; width: auto;
+  display: block; user-select: none; pointer-events: none;
+}
+.ex-char-editorial {
+  position: absolute; inset: 0;
+  background-size: 100% 100%; background-repeat: no-repeat;
+  filter: grayscale(1) sepia(0.42) contrast(1.35) brightness(0.8);
+  transition: filter var(--tr);
+}
+.s-rd .ex-char-editorial {
+  filter: grayscale(1) sepia(0.14) contrast(1.42) brightness(0.75);
+}
+
+/* RGB ghost layers — print misalignment depth */
+.ex-char-ghost-r {
+  position: absolute; inset: 0; pointer-events: none;
+  background-size: 100% 100%; background-repeat: no-repeat;
+  filter: grayscale(1) sepia(1) hue-rotate(330deg) saturate(5) contrast(1.3) brightness(0.55);
+  opacity: 0; transform: translateX(5px);
+  mix-blend-mode: screen;
+  transition: opacity 0.35s;
+}
+.ex-char-ghost-b {
+  position: absolute; inset: 0; pointer-events: none;
+  background-size: 100% 100%; background-repeat: no-repeat;
+  filter: grayscale(1) sepia(1) hue-rotate(195deg) saturate(5) contrast(1.3) brightness(0.45);
+  opacity: 0; transform: translateX(-5px);
+  mix-blend-mode: screen;
+  transition: opacity 0.35s;
+}
+.ex-char:hover .ex-char-ghost-r { opacity: 0.07; }
+.ex-char:hover .ex-char-ghost-b { opacity: 0.07; }
+/* Ghosts visible during transition */
+.s-transit .ex-char-ghost-r,
+.s-transit .ex-char-ghost-b { opacity: 0.13 !important; }
+
+/* Halftone print overlay */
+.ex-char-ht {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle 1.5px at 3px 3px, rgba(0,0,0,0.38) 0%, transparent 100%);
+  background-size: 6px 6px; mix-blend-mode: multiply;
+}
+
+/* ══════════════════════════════════════════
+   PANEL DERECHO
+   Imagen con fondo, editorial B&W
+   ══════════════════════════════════════════ */
+.ex-right {
+  flex: 0 0 28%; position: relative; overflow: hidden;
+  cursor: pointer; border-left: 1.5px solid currentColor;
+  /* animation: ex-flicker (declared in IDLE section) */
+  transition: border-color var(--tr), opacity var(--tr), transform var(--tr);
+}
+.s-fs .ex-right { opacity: 0; transform: translateX(100%); pointer-events: none; animation: none; }
+
+.ex-right-img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  filter: grayscale(1) sepia(0.35) contrast(1.28) brightness(0.82);
+  transition: filter 0.45s ease;
+}
+.ex-right:hover .ex-right-img {
+  filter: grayscale(0.65) sepia(0.22) contrast(1.14) brightness(0.94);
+}
+
+.ex-right-ht {
+  position: absolute; inset: 0; pointer-events: none; z-index: 3;
+  background-image: radial-gradient(circle 1px at 3px 3px, rgba(0,0,0,0.32) 0%, transparent 100%);
+  background-size: 5px 5px; mix-blend-mode: multiply;
+}
+
+.ex-right-hint {
+  position: absolute; top: 10px; left: 10px;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+  z-index: 10; padding: 3px 10px;
+  background: var(--s-ink); color: var(--s-bg);
+  opacity: 0; transition: opacity 0.3s;
+}
+.s-rd .ex-right-hint { background: var(--r-ink); color: var(--r-bg); }
+.ex-right:hover .ex-right-hint { opacity: 1; }
+
+.ex-right-vlabel {
+  position: absolute; bottom: 12px; right: 7px;
+  writing-mode: vertical-rl;
+  font-family: var(--mono); font-size: 7px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  z-index: 10; opacity: 0.48;
+}
+
+/* ══════════════════════════════════════════
+   FULLSCREEN — sin filtros, obra real
+   ══════════════════════════════════════════ */
+.ex-fullscreen {
+  position: absolute; inset: 0; z-index: 250;
+  background: #080808;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--tr-f);
+  cursor: default;
+}
+.s-fs .ex-fullscreen { opacity: 1; pointer-events: auto; }
+
+/* Slow zoom when in fullscreen mode — cinematic */
+@keyframes ex-fs-zoom {
+  from { transform: scale(1) translateY(0); }
+  to   { transform: scale(1.055) translateY(-0.8%); }
+}
+.ex-fs-img {
+  width: 100%; height: 100%;
+  object-fit: contain; display: block;
+}
+.s-fs .ex-fs-img {
+  animation: ex-fs-zoom 16s ease-in-out infinite alternate;
+}
+
+.ex-fs-label {
+  position: absolute; top: 18px; left: 20px;
+  font-family: var(--mono); font-size: 8px;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(244,238,216,0.2); pointer-events: none;
+}
+.ex-fs-close {
+  position: absolute; bottom: 18px; right: 20px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(244,238,216,0.32);
+  background: none; border: none; cursor: pointer;
+  transition: color 0.2s;
+}
+.ex-fs-close:hover { color: rgba(244,238,216,0.78); }
+
+/* ══════════════════════════════════════════
+   BARRA INFERIOR
+   ══════════════════════════════════════════ */
+.ex-bottombar {
+  flex-shrink: 0; height: 30px;
+  border-top: 1.5px solid currentColor;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+  font-family: var(--mono); font-size: 8px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  position: relative; z-index: 100;
+  transition: border-color var(--tr), opacity var(--tr), color var(--tr);
+}
+.s-fs .ex-bottombar { opacity: 0; pointer-events: none; }
+
+/* ── Panel images ── */
+.ex-panel-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) sepia(0.28) contrast(1.18) brightness(0.72);
+  transition: filter 0.4s ease, opacity var(--tr);
+}
+.ex-panel-row:hover .ex-panel-img {
+  filter: grayscale(0.55) sepia(0.2) contrast(1.1) brightness(0.88);
+}
+/* s-enter: panel images fade in with the rest of the content */
+.s-enter .ex-panel-img {
+  animation: ex-text-in 0.55s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: 0.08s;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .ex-left   { flex: 0 0 20%; min-width: 100px; }
+  .ex-right  { flex: 0 0 26%; }
+  .ex-char   { left: 12%; height: 106%; }
+  .ex-title-main { font-size: clamp(52px, 11vw, 110px); }
+  .ex-title-jp   { font-size: clamp(70px, 14vw, 145px); }
+  .ex-panel-vlabel { display: none; }
+  .ex-textblock  { width: 44%; font-size: 8px; }
+}
+@media (max-width: 640px) {
+  .ex-left   { display: none; }
+  .ex-right  { flex: 0 0 32%; }
+  .ex-char   { left: 0; height: 100%; top: 0; }
+  .ex-textblock  { display: none; }
+  .ex-infocard   { left: 6px; bottom: 36px; }
+}
+/* ── Mobile additional ─────────────────────── */
+@media (max-width: 480px) {
+  .ex-topbar     { height: 40px; padding: 0 10px; gap: 8px; }
+  .ex-title-en   { font-size: clamp(26px, 12vw, 52px); }
+  .ex-title-es   { font-size: clamp(10px, 3.5vw, 18px); }
+  .ex-char       { max-height: 55vh; }
+  .ex-right      { padding: 8px 12px; }
+  .ex-left       { flex: 0 0 18%; min-width: 70px; }
+  .ex-ht         { font-size: 9px; }
+}
+
+
+/* ── Mobile: Exploracion ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* DO NOT set pointer-events:none on ex-char — it handles click to fullscreen */
+  /* ex-char already has onClick — keep it interactive */
+
+  /* Reduce char size so it doesn't dominate on small screens */
+  .ex-char { max-height: 58vh !important; }
+
+  /* Ensure right panel is visible and usable */
+  .ex-right { z-index: 5; position: relative; }
+  .ex-left  { flex: 0 0 18%; min-width: 72px; z-index: 5; }
+
+  /* Topbar */
+  .ex-topbar { height: 42px; padding: 0 10px; gap: 8px; }
+  .ex-title-en { font-size: clamp(24px, 11vw, 48px) !important; }
+  .ex-title-es { font-size: clamp(9px, 3vw, 16px) !important; }
+
+  /* Fullscreen mode: char fills screen */
+  .s-fs .ex-char { max-height: 100svh !important; }
+}
+@media (max-width: 480px) {
+  .ex-left { flex: 0 0 16%; min-width: 60px; }
+  .ex-ht { font-size: 8px !important; }
+}

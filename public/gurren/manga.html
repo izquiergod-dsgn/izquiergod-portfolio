@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurren Lagann - Pierce the Heavens!</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap">
+    <link rel="stylesheet" href="manga.css">
+    <link rel="shortcut icon" href="Gurren.png" type="image/x-icon">
+</head>
+<body>
+    <header class="manga-hero">
+        <nav class="navbar">
+            <div class="logo"> <a href="landing.html" class="logo-link" target="_blank">GURREN LAGANN</a> </div>
+            <ul class="nav-links">
+                <li><a href="watch.html" class="nav-link" target="_blank">Episodes</a></li>
+                <li><a href="landing.html" class="nav-link" >Story</a></li>
+                <li><a href="gallery.html" class="nav-link" target="_blank">Gallery</a></li>
+                <li><a href="manga.html" class="nav-link" target="_blank">Manga</a></li>
+            </ul>
+            <button class="join-btn">Join the Brigade!</button>
+        </nav>
+        
+        <div class="manga-title-container">
+            <h1 class="manga-main-title">MANGA READER</h1>
+            <p class="manga-subtitle">Experience the epic story in a different form!</p>
+        </div>  
+        <div class="manga-slider">
+            <div class="manga-slide">
+                <img src="images/manga-cover1.jpg" alt="Gurren Lagann Manga Volume 1">
+            </div>
+            <div class="manga-slide">
+                <img src="images/manga-cover2.jpg" alt="Gurren Lagann Manga Volume 2">
+            </div>
+            <div class="manga-slide">
+                <img src="images/manga-cover3.jpg" alt="Gurren Lagann Manga Volume 3">
+            </div>
+            <div class="manga-slide">
+                <img src="images/manga-cover4.jpg" alt="Gurren Lagann Manga Volume 4">
+            </div>
+            <div class="manga-slide">
+                <img src="images/manga-cover5.jpg" alt="Gurren Lagann Manga Volume 5">
+            </div>
+        </div>
+    </header>
+    
+    <main class="manga-container">
+        <div class="manga-header">
+            <h2 class="manga-title">Tengen Toppa Gurren Lagann</h2>
+        </div>
+        
+        <div class="chapter-controls">
+            <button id="prevChapter" class="page-btn">Last Chapter</button>
+            <button id="nextChapter" class="page-btn">Next Chapter</button>
+        </div>
+        
+        <!-- Visor del manga -->
+        <div class="manga-viewer" id="mangaViewer">
+            <!-- Las páginas se insertarán aquí dinámicamente -->
+        </div>
+        
+        <!-- Controles de página (fijos en la parte inferior) -->
+        <div class="page-controls">
+            <button id="prevPage" class="page-btn">Back</button>
+            <div class="page-info" id="pageInfo">Página 1 de 5</div>
+            <button id="nextPage" class="page-btn">Next</button>
+        </div>
+        </div>
+        
+        <div class="manga-details">
+            <h3 class="details-title">Manga Details</h3>
+            
+            <div class="details-content">
+                <div class="details-text">
+                    <p>The Gurren Lagann manga is an adaptation of the anime series, featuring the same over-the-top mecha action and emotional storytelling that made the anime a classic.</p>
+                    <p>Follow Simon's journey from a timid digger to the leader of Team Dai-Gurren as they fight against the Spiral King and his Beastmen army.</p>
+                    <p>The manga expands on some scenes from the anime and offers a slightly different perspective on the epic story of humanity's fight for freedom.</p>
+                </div>
+                
+                <div class="details-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Author:</span>
+                        <span>Kazuki Nakashima</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Artist:</span>
+                        <span>Kotaro Mori</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Volumes:</span>
+                        <span>6</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Published:</span>
+                        <span>2007-2008</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Publisher:</span>
+                        <span>ASCII Media Works</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <section class="quote-section">
+        <div class="quote-container">
+            <blockquote>
+                "Your drill is the drill that will pierce the heavens!"
+            </blockquote>
+            <cite>- Simon</cite>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">TENGEN TOPPA <span class="footer-highlight">GURREN LAGANN</span></div>
+            
+            <div class="footer-about">
+                <h3>About the Anime</h3>
+                <p>Tengen Toppa Gurren Lagann is a 2007 mecha anime series that follows Simon and Kamina as they fight against the Spiral King to free humanity from underground villages. Known for its over-the-top action, emotional storytelling, and iconic quotes, it's considered one of the greatest mecha anime of all time.</p>
+                <div class="anime-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">27</span>
+                        <span class="stat-label">Episodes</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">2007</span>
+                        <span class="stat-label">Release</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">8.7</span>
+                        <span class="stat-label">Rating</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="landing.html" target="_blank">About</a>
+                <a href="gallery.html" target="_blank">Gallery</a>
+                <a href="watch.html" target="_blank">Episodes</a>
+                <a href="manga.html">Manga</a>
+                <a href="https://kurogami.com/es/producto/gurren-lagann-estatua-ultimate-premium-masterline-series-14-kamina-simon-yoko-with-lagann-97-cm">Merchandise</a>
+            </div>
+            
+            <div class="newsletter">
+                <h3>Join Team Dai-Gurren!</h3>
+                <p>Get updates on Gurren Lagann news and events</p>
+                <form>
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Team Dai-Gurren. All rights reserved. Just who the hell do you think we are?!</p>
+        </div>
+    </footer>
+    <script>
+            // DATOS DEL MANGA (3 capítulos como solicitaste)
+        const mangaData = {
+            1: {
+                title: "Chapter 1: Head for the Surface!",
+                pages: [
+                    "images/manga/ch1/pagina1.png",
+                    "images/manga/ch1/pagina2.png",
+                    "images/manga/ch1/pagina3.png",
+                    "images/manga/ch1/pagina4.png",
+                    "images/manga/ch1/pagina5.png"
+                ]
+            },
+            2: {
+                title: "Chapter 2: Believe in Youserlf",
+                pages: [
+                    "images/manga/ch2/pagina1.png",
+                    "images/manga/ch2/pagina2.png",
+                    "images/manga/ch2/pagina3.png",
+                    "images/manga/ch2/pagina4.png",
+                    "images/manga/ch2/pagina5.png"
+                ]
+            },
+            3: {
+                title: "Chapter 3: We need someone with Spirit!",
+                pages: [
+                    "images/manga/ch3/pagina1.png",
+                    "images/manga/ch3/pagina2.png",
+                    "images/manga/ch3/pagina3.png",
+                    "images/manga/ch3/pagina4.png",
+                    "images/manga/ch3/pagina5.png"
+                ]
+            }
+        };
+
+        // ESTADO Y ELEMENTOS DEL DOM
+        let currentChapter = 1;
+        let currentPage = 0;
+        const viewer = document.getElementById('mangaViewer');
+        const pageInfo = document.getElementById('pageInfo');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const prevChapterBtn = document.getElementById('prevChapter');
+        const nextChapterBtn = document.getElementById('nextChapter');
+
+        // CARGAR CAPÍTULO
+        function loadChapter(chapter) {
+            currentChapter = chapter;
+            currentPage = 0;
+            viewer.innerHTML = '';
+            
+            mangaData[chapter].pages.forEach((page, index) => {
+                const img = document.createElement('img');
+                img.src = page;
+                img.classList.add('manga-page');
+                if(index === 0) img.classList.add('active');
+                viewer.appendChild(img);
+            });
+            
+            updateControls();
+        }
+
+        // MOSTRAR PÁGINA
+        function showPage(pageIndex) {
+    const pages = document.querySelectorAll('.manga-page');
+    if (!pages[pageIndex]) return;
+    
+    // 1. Obtener posición actual del visor antes del cambio
+    const viewer = document.querySelector('.manga-viewer');
+    const viewerPosition = viewer.getBoundingClientRect().top + window.scrollY;
+    
+    // 2. Cambiar la página activa
+    pages.forEach(page => page.classList.remove('active'));
+    pages[pageIndex].classList.add('active');
+    currentPage = pageIndex;
+    updateControls();
+    
+    // 3. Calcular nueva posición después del renderizado
+    requestAnimationFrame(() => {
+        const newViewerPosition = viewer.getBoundingClientRect().top + window.scrollY;
+        const positionDifference = newViewerPosition - viewerPosition;
+        
+        // 4. Ajustar scroll para compensar cualquier cambio de layout
+        window.scrollTo({
+            top: window.scrollY + positionDifference,
+            behavior: 'auto'
+        });
+    });
+}
+
+        // ACTUALIZAR CONTROLES
+        function updateControls() {
+            const chapter = mangaData[currentChapter];
+            const totalPages = chapter.pages.length;
+            
+            // Actualizar información de página
+            pageInfo.textContent = `${chapter.title} - Page ${currentPage + 1} of ${totalPages}`;
+            
+            // Actualizar estado de los botones
+            prevPageBtn.disabled = currentPage <= 0;
+            nextPageBtn.disabled = currentPage >= totalPages - 1;
+            prevChapterBtn.disabled = currentChapter <= 1;
+            nextChapterBtn.disabled = currentChapter >= Object.keys(mangaData).length;
+        }
+
+        // EVENT LISTENERS
+        prevPageBtn.addEventListener('click', () => showPage(currentPage - 1));
+        nextPageBtn.addEventListener('click', () => showPage(currentPage + 1));
+        
+        prevChapterBtn.addEventListener('click', () => {
+            if(currentChapter > 1) loadChapter(currentChapter - 1);
+        });
+        
+        nextChapterBtn.addEventListener('click', () => {
+            if(currentChapter < Object.keys(mangaData).length) loadChapter(currentChapter + 1);
+        });
+
+        // NAVEGACIÓN CON TECLADO
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowLeft') prevPageBtn.click();
+            if(e.key === 'ArrowRight') nextPageBtn.click();
+        });
+
+        // INICIAR
+        loadChapter(1);
+    </script>
+</body>
+</html>

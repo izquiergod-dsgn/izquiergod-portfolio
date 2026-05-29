@@ -1,0 +1,219 @@
+/* ═══════════════════════════════════════════
+   GLOBAL — VARIABLES, RESET, BASE
+═══════════════════════════════════════════ */
+
+:root {
+  --bk:    #080806;
+  --bk2:   #0e0e0c;
+  --wh:    #F4F1EA;
+  --or:    #FF5500;
+  --or2:   #CC3D00;
+  --gr:    #AAFF00;
+  --re:    #BB1010;
+  --bl:    #1122CC;
+  --mu:    rgba(244,241,234,.18);
+  --mu2:   rgba(244,241,234,.06);
+
+  --font-display: 'Barlow Condensed', Impact, 'Arial Black', sans-serif;
+  --font-mono:    'DM Mono', 'Courier New', monospace;
+  --font-body:    'Barlow Condensed', system-ui, sans-serif;
+
+  /* ── Tokens de interacción sistémicos ──────────────────────
+     Lenguaje unificado de motion. No uniformiza la estética
+     de cada página — solo estandariza microinteracciones base:
+     hover de botones, cambios de color, feedback inmediato.
+     Páginas con sistemas propios (Powerlifting, Exploracion)
+     pueden sobreescribir con sus --transition-* locales.
+  ─────────────────────────────────────────────────────────── */
+  --ui-fast:   0.12s ease;
+  --ui-mid:    0.22s cubic-bezier(.22,1,.36,1);
+  --ui-slow:   0.4s  cubic-bezier(.22,1,.36,1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  /* Prevent horizontal overflow on all devices */
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bk);
+  color: var(--wh);
+  font-family: var(--font-display);
+  overflow: hidden;
+  /* cursor:none solo en pointer fino (mouse/stylus).
+     En touch (pointer:coarse) se restaura el cursor del sistema. */
+  cursor: none;
+}
+
+/* Restaurar cursor en dispositivos touch */
+@media (pointer: coarse) {
+  body { cursor: auto; }
+  #cursor-dot { display: none !important; }
+  a, button, [data-hover] { cursor: pointer; }
+}
+
+/* ── Shared screen wrapper ── */
+.screen {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh; /* avoids mobile browser chrome jump */
+  overflow: hidden;
+}
+
+.screen > video.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* ── Custom cursor (solo pointer fino) ── */
+#cursor-dot {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  width: 10px;
+  height: 10px;
+  background: var(--or);
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: width var(--ui-fast), height var(--ui-fast), background var(--ui-fast);
+}
+
+#cursor-dot.hovering {
+  width: 6px;
+  height: 6px;
+  background: var(--wh);
+}
+
+/* ── Focus ring sistémico ────────────────────────────────────
+   Elimina el outline default del browser en todos los elementos
+   interactivos y lo reemplaza con uno coherente con el sistema.
+   Visible solo con navegación por teclado (:focus-visible),
+   no se activa con clicks/touch.
+─────────────────────────────────────────────────────────── */
+*:focus { outline: none; }
+
+*:focus-visible {
+  outline: 2px solid var(--or);
+  outline-offset: 3px;
+}
+
+/* Excepciones: inputs y textareas tienen su propio estilo de foco */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 1px solid var(--or);
+  outline-offset: 0;
+}
+
+/* ── Shared: scanline overlay ── */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,.055) 3px,
+    rgba(0,0,0,.055) 4px
+  );
+}
+
+/* ── Shared: halftone overlay ── */
+.halftone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background-image: radial-gradient(circle, rgba(0,0,0,.2) 1.2px, transparent 1.2px);
+  background-size: 9px 9px;
+}
+
+/* ── Shared: right red stripe (P3 signature) ── */
+.stripe-r {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: var(--or);
+  z-index: 20;
+  pointer-events: none;
+}
+.stripe-r2 {
+  position: absolute;
+  right: 9px; top: 0; bottom: 0;
+  width: 2px;
+  background: rgba(255,85,0,.22);
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* ── Shared: keyboard hints ── */
+.hints {
+  position: absolute;
+  bottom: 22px; right: 28px;
+  z-index: 30;
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 5px;
+  font-family: var(--font-mono);
+  opacity: 0;
+  transition: opacity .5s ease .9s;
+}
+.hints.visible { opacity: 1; }
+.hints-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: .18em;
+  color: rgba(255,255,255,.2);
+}
+.hints-key {
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 3px;
+  padding: 1px 6px; font-size: 10px;
+}
+
+/* ── prefers-reduced-motion ─────────────────────────────────
+   Desactiva animaciones no esenciales. No elimina transiciones
+   de estado — solo reduce motion innecesario.
+─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Excepción: scroll behavior smooth puede quedar */
+  html { scroll-behavior: auto; }
+}
+
+/* ── Mobile performance: reduce expensive GPU effects ── */
+@media (max-width: 768px) {
+  /* Remove backdrop-filter on mobile (expensive on low-end GPUs) */
+  .sys-back--fixed {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(8,8,6,0.92) !important;
+  }
+  /* Reduce scanlines opacity */
+  .scanlines { opacity: 0.4; }
+  /* Disable parallax vars — set to 0 */
+  [style*="--pw-rx"] { --pw-rx: 0 !important; --pw-ry: 0 !important; }
+}
+
+/* ── Mobile: hide keyboard navigation hints ── */
+@media (max-width: 768px) {
+  .hints { display: none !important; }
+  .ps-hints { display: none !important; }
+}

@@ -1,0 +1,236 @@
+/* ── Menu overlay ── */
+.menu-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* ── Ghost — massive background text that switches per item (CAOS) ── */
+.menu-ghost {
+  position: absolute;
+  top: 70%;
+  right: -60px;
+  transform: translateY(-50%) rotate(-12deg);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(120px, 26vw, 340px);
+  line-height: .82;
+  color: rgba(0, 119, 255, 0.144);
+  letter-spacing: -.03em;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  white-space: nowrap;
+  transition: opacity .35s cubic-bezier(.22,1,.36,1), filter .35s cubic-bezier(.22,1,.36,1), transform .35s cubic-bezier(.22,1,.36,1);
+  will-change: opacity, filter;
+}
+
+/* ── Name tag — rotated like original ── */
+.menu-nametag {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  z-index: 20;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(70px, 12vw, 140px);
+  line-height: .88;
+  letter-spacing: .02em;
+  color: rgba(8,8,6,.55);
+  transform: rotate(16deg);
+  transform-origin: left top;
+  user-select: none;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.menu-nametag span:first-child {
+  color: rgba(0,0,0,.7);
+}
+
+/* ── Nav ── */
+.menu-nav {
+  position: relative;
+  z-index: 20;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: all;
+}
+
+/* ── Row ── */
+.menu-row {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateX(44px);
+  transition: opacity .4s ease, transform .44s cubic-bezier(.22,1,.36,1);
+}
+.menu-row.mounted {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* ── Glow (per row) ── */
+.menu-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%; height: 220%;
+  background: radial-gradient(ellipse at center, rgba(255,85,0,.3) 0%, transparent 70%);
+  filter: blur(20px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s cubic-bezier(.22,1,.36,1);
+}
+.menu-row.active .menu-glow { opacity: 1; }
+.menu-row.active { filter: drop-shadow(0 0 12px rgba(255,85,0,0.08)); }
+
+/* ── Skew wrap ── */
+.menu-skew {
+  position: relative;
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+}
+
+/* ── Triangle shadow (pink/orange pop) — matches original mechanism ── */
+@keyframes tri-pop {
+  0%   { transform: translateY(-40%) translateX(-12px) scaleX(0)    scaleY(0.9); opacity: 0; }
+  45%  { transform: translateY(-48%) translateX(-16px) scaleX(1.28) scaleY(1.22); opacity: 1; }
+  70%  { transform: translateY(-38%) translateX(-10px) scaleX(0.94) scaleY(0.96); }
+  88%  { transform: translateY(-41%) translateX(-13px) scaleX(1.04) scaleY(1.02); }
+  100% { transform: translateY(-40%) translateX(-12px) scaleX(1)    scaleY(1); }
+}
+
+.menu-tri {
+  position: absolute;
+  top: 50%;
+  transform-origin: left center;
+  background: rgba(0, 17, 255, 0.82);
+  z-index: 1;
+  pointer-events: none;
+  transform: translateY(-40%) translateX(-12px) scaleX(0);
+  transition: transform .18s ease;
+}
+.menu-tri.pop {
+  animation: tri-pop .28s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+
+/* ── White highlight ── */
+.menu-highlight {
+  position: absolute;
+  top: 50%;
+  transform-origin: left center;
+  background: #ffffff;
+  z-index: 2;
+  transition: transform .22s cubic-bezier(.22,1,.36,1);
+  pointer-events: none;
+}
+
+/* ── Labels ── */
+.menu-label-wrap {
+  position: relative;
+  z-index: 3;
+}
+
+.menu-label {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: .02em;
+  line-height: .85;
+  display: block;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* inactive — orange tinted */
+.menu-label-dark {
+  color: #2600ff;
+  transition: color .12s ease;
+}
+.menu-row.active .menu-label-dark { color: #1a0400; }
+.menu-row:hover:not(.active) .menu-label-dark { color: #2238ff; }
+
+/* active — dark label on white highlight */
+.menu-label-bright {
+  color: #1a0400;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+.menu-row.active .menu-label-bright { opacity: 1; }
+
+/* ── Separador entre ítems principales y links externos ── */
+.menu-sep {
+  width: 48px;
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+  margin: 10px 0 4px 48px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+}
+.menu-sep.mounted { transform: scaleX(1); }
+
+/* ── Link row — misma estructura, nivel visual levemente reducido ── */
+.menu-row--link { margin-bottom: -6px; }
+
+/* triángulo de links: naranja más tenue */
+.menu-tri--link { background: rgba(0, 17, 255, 0.55); }
+
+/* glow de links: más sutil */
+.menu-glow--link {
+  background: radial-gradient(ellipse at center, rgba(255,85,0,.18) 0%, transparent 70%);
+}
+
+/* label base de links */
+.menu-label--link { color: rgba(38, 0, 255, 0.7); }
+.menu-row--link.active .menu-label--link { color: #1a0400; }
+
+/* badge externo ↗ */
+.menu-ext-badge {
+  position: absolute;
+  right: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--or);
+  opacity: 0.7;
+  pointer-events: none;
+  animation: badge-in 0.15s cubic-bezier(.22,1,.36,1);
+}
+@keyframes badge-in {
+  from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
+  to   { opacity: 0.7; transform: translateY(-50%) translateX(0); }
+}
+
+/* ── Mobile ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .menu-ghost    { font-size: clamp(60px, 28vw, 160px); opacity: 0.06; }
+  .menu-sep      { margin-left: 24px; }
+  .hints         { display: none; }
+  .stripe-r, .stripe-r2 { display: none; }
+}
+@media (max-width: 480px) {
+  .menu-ghost  { display: none; }
+  .menu-nav    { gap: 0; }
+}
